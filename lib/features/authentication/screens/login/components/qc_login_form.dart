@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:quicks_cart/features/authentication/screens/password_configuration/forgot_password_screen.dart';
-import 'package:quicks_cart/navigation_menu.dart';
+import 'package:quicks_cart/utils/validators/validation.dart';
 
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
@@ -17,12 +17,15 @@ class QCLoginForm extends StatelessWidget {
     final loginController = Get.put(LoginController());
 
     return Form(
+      key: loginController.loginFormKey,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: QCSizes.lg),
         child: Column(
           children: [
             /// Email Text Form Field
             TextFormField(
+              controller: loginController.emailController,
+              validator: (value) => QCValidator.validateEmail(value),
               decoration: InputDecoration(
                 prefixIcon: Icon(Iconsax.direct_right),
                 labelText: QCTexts.email,
@@ -31,11 +34,26 @@ class QCLoginForm extends StatelessWidget {
             SizedBox(height: QCSizes.spaceBtwInputFields),
 
             /// Password Text Form Field
-            TextFormField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(Iconsax.password_check),
-                labelText: QCTexts.password,
-                suffixIcon: Icon(Iconsax.eye_slash),
+            Obx(
+              () => TextFormField(
+                controller: loginController.passwordController,
+                validator: (value) => QCValidator.validatePassword(value),
+                obscureText: loginController.hidePassword.value,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Iconsax.password_check),
+                  labelText: QCTexts.password,
+                  suffixIcon: IconButton(
+                    onPressed:
+                        () =>
+                            loginController.hidePassword.value =
+                                !loginController.hidePassword.value,
+                    icon: Icon(
+                      loginController.hidePassword.value
+                          ? Iconsax.eye_slash
+                          : Iconsax.eye,
+                    ),
+                  ),
+                ),
               ),
             ),
             SizedBox(height: QCSizes.sm),
@@ -51,16 +69,17 @@ class QCLoginForm extends StatelessWidget {
                     // check box
                     Obx(
                       () => InkWell(
-                        onTap: () {
-                          loginController.checkBoxValueToggle();
-                        },
+                        onTap:
+                            () =>
+                                loginController.rememberMe.value =
+                                    !loginController.rememberMe.value,
                         child: Icon(
-                          loginController.checkBoxValue.value
+                          loginController.rememberMe.value
                               ? Icons.check_circle
                               : Icons.check_circle,
                           size: QCSizes.iconMd,
                           color:
-                              loginController.checkBoxValue.value
+                              loginController.rememberMe.value
                                   ? Theme.of(context).primaryColor
                                   : Theme.of(context).iconTheme.color,
                         ),
@@ -91,7 +110,7 @@ class QCLoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => Get.to(() => NavigationMenu()),
+                onPressed: () => loginController.login(),
                 child: Text(QCTexts.signIn),
               ),
             ),

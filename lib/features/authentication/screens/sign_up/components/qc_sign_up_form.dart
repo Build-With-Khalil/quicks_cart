@@ -108,65 +108,7 @@ class QCSignUpForm extends StatelessWidget {
           SizedBox(height: QCSizes.spaceBtwItems),
 
           /// Terms & Conditions checkbox
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // check box
-              Obx(
-                () => Checkbox(
-                  value: signUpController.privacyPolicy.value,
-                  onChanged:
-                      (value) =>
-                          signUpController.privacyPolicy.value !=
-                          signUpController.privacyPolicy.value,
-                ),
-              ),
-
-              /// privacy policy and terms of use
-              Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "${QCTexts.iAgreeTo} ",
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    TextSpan(
-                      text: QCTexts.privacyPolicy,
-                      style: Theme.of(context).textTheme.bodyMedium!.apply(
-                        color:
-                            QCHelperFunctions.isDarkMode(context)
-                                ? QCColors.white
-                                : QCColors.primary,
-                        decoration: TextDecoration.underline,
-                        decorationColor:
-                            QCHelperFunctions.isDarkMode(context)
-                                ? QCColors.white
-                                : QCColors.primary,
-                      ),
-                    ),
-                    TextSpan(
-                      text: " ${QCTexts.and} ",
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    TextSpan(
-                      text: QCTexts.termsOfUse,
-                      style: Theme.of(context).textTheme.bodyMedium!.apply(
-                        color:
-                            QCHelperFunctions.isDarkMode(context)
-                                ? QCColors.white
-                                : QCColors.primary,
-                        decoration: TextDecoration.underline,
-                        decorationColor:
-                            QCHelperFunctions.isDarkMode(context)
-                                ? QCColors.white
-                                : QCColors.primary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          PrivacyPolicyAndTermsOfUse(),
           SizedBox(height: QCSizes.spaceBtwItems),
 
           ///Sign Up Button
@@ -179,6 +121,74 @@ class QCSignUpForm extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class PrivacyPolicyAndTermsOfUse extends StatelessWidget {
+  const PrivacyPolicyAndTermsOfUse({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = SignUpController.instance;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        // check box
+        Obx(
+          () => Checkbox(
+            value: controller.privacyPolicy.value,
+            onChanged:
+                (value) =>
+                    controller.privacyPolicy.value =
+                        !controller.privacyPolicy.value,
+          ),
+        ),
+
+        /// privacy policy and terms of use
+        Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: "${QCTexts.iAgreeTo} ",
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              TextSpan(
+                text: QCTexts.privacyPolicy,
+                style: Theme.of(context).textTheme.bodyMedium!.apply(
+                  color:
+                      QCHelperFunctions.isDarkMode(context)
+                          ? QCColors.white
+                          : QCColors.primary,
+                  decoration: TextDecoration.underline,
+                  decorationColor:
+                      QCHelperFunctions.isDarkMode(context)
+                          ? QCColors.white
+                          : QCColors.primary,
+                ),
+              ),
+              TextSpan(
+                text: " ${QCTexts.and} ",
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              TextSpan(
+                text: QCTexts.termsOfUse,
+                style: Theme.of(context).textTheme.bodyMedium!.apply(
+                  color:
+                      QCHelperFunctions.isDarkMode(context)
+                          ? QCColors.white
+                          : QCColors.primary,
+                  decoration: TextDecoration.underline,
+                  decorationColor:
+                      QCHelperFunctions.isDarkMode(context)
+                          ? QCColors.white
+                          : QCColors.primary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

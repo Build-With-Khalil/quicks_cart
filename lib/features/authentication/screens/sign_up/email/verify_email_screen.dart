@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quicks_cart/common/widgets/success/success_screen.dart';
-import 'package:quicks_cart/features/authentication/screens/login/login_screen.dart';
+import 'package:quicks_cart/data/repositories/authentication/authentication_repository.dart';
+import 'package:quicks_cart/features/authentication/controllers/sign_up/verify_email_controller.dart';
 import 'package:quicks_cart/utils/constants/text_strings.dart';
 import 'package:quicks_cart/utils/helpers/helper_functions.dart';
 
@@ -9,17 +9,20 @@ import '../../../../../utils/constants/image_strings.dart';
 import '../../../../../utils/constants/sizes.dart';
 
 class VerifyEmailScreen extends StatelessWidget {
-  const VerifyEmailScreen({super.key});
+  const VerifyEmailScreen({super.key, this.email});
+
+  final String? email;
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(VerifyEmailController());
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: () => Get..offAll(() => LoginScreen()),
+            onPressed: () => AuthenticationRepository.instance.logout(),
             icon: Icon(Icons.clear, color: Theme.of(context).iconTheme.color),
           ),
         ],
@@ -38,7 +41,7 @@ class VerifyEmailScreen extends StatelessWidget {
 
               ///Title & Sub-Title
               Text(
-                QCTexts.confirmEmail,
+                email ?? '',
                 style: Theme.of(context).textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
@@ -60,15 +63,7 @@ class VerifyEmailScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed:
-                      () => Get.to(
-                        () => SuccessScreen(
-                          image: QCImages.staticSuccessIllustration,
-                          title: QCTexts.yourAccountCreatedTitle,
-                          subTitle: QCTexts.yourAccountCreatedSubTitle,
-                          onPressed: () => Get.to(() => LoginScreen()),
-                        ),
-                      ),
+                  onPressed: () => controller.checkEmailVerificationStatus(),
                   child: Text(QCTexts.tContinue),
                 ),
               ),
@@ -76,7 +71,7 @@ class VerifyEmailScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () => controller.sendEmailVerification(),
                   child: Text(QCTexts.resendEmail),
                 ),
               ),

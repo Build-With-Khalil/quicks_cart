@@ -56,7 +56,9 @@ class QCImages {
   static const String deliveredEmailIllustration =
       "assets/images/animations/sammy-line-man-receives-a-mail.png";
   static const String decorAnimation =
-      "assets/images/animations/loader-animation.json";
+      "assets/images/animations/141397-loading-juggle.json";
+  static const String successfulRegisterAnimation =
+      "assets/images/animations/72462-check-register.json";
   static const String verifyIllustration =
       "assets/images/animations/sammy-line-travel-backpack-with-passport-and-air-ticket.gif";
 
