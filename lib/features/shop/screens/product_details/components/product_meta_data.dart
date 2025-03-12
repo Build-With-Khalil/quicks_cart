@@ -71,7 +71,7 @@ class ProductMetaData extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircularImages(
+            QCCircularImages(
               image: QCImages.nikeLogo,
               height: 32,
               width: 32,

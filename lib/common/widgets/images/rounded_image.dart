@@ -44,13 +44,15 @@ class QCRoundedImage extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: ClipRRect(
-          borderRadius: applyImageRadius
-              ? BorderRadius.circular(borderRadius)
-              : BorderRadius.zero,
+          borderRadius:
+              applyImageRadius
+                  ? BorderRadius.circular(borderRadius)
+                  : BorderRadius.zero,
           child: Image(
-            image: isNetworkImage
-                ? NetworkImage(imageURL)
-                : AssetImage(imageURL) as ImageProvider,
+            image:
+                isNetworkImage
+                    ? NetworkImage(imageURL)
+                    : AssetImage(imageURL) as ImageProvider,
             fit: fit,
           ),
         ),

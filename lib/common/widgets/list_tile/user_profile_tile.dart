@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:quicks_cart/utils/constants/colors.dart';
+import 'package:quicks_cart/utils/constants/image_strings.dart';
 
-import '../../../utils/constants/image_strings.dart';
+import '../../../features/personalization/controller/user/user_controller.dart';
 import '../images/rounded_image.dart';
 
 class QCUserProfileCard extends StatelessWidget {
@@ -12,6 +13,7 @@ class QCUserProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = UserController.instance;
     return ListTile(
       leading: QCRoundedImage(
         imageURL: QCImages.user,
@@ -21,13 +23,13 @@ class QCUserProfileCard extends StatelessWidget {
         padding: EdgeInsets.zero,
       ),
       title: Text(
-        "M.Khalil Ur Rehman",
+        controller.user.value.fullName,
         style: Theme.of(
           context,
         ).textTheme.headlineSmall!.apply(color: QCColors.white),
       ),
       subtitle: Text(
-        "muhammad.khalil.dev@gmail.com",
+        controller.user.value.email,
         style: Theme.of(
           context,
         ).textTheme.labelSmall!.apply(color: QCColors.white),

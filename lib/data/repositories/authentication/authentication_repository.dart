@@ -5,6 +5,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:quicks_cart/data/repositories/user/user_repository.dart';
 import 'package:quicks_cart/navigation_menu.dart';
 
 import '../../../features/authentication/screens/On_Boarding/on_boarding_screen.dart';
@@ -165,12 +166,54 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
+  ///[ReAuthenticate] Valid for any authentication
+  Future<UserCredential?> reAuthenticateWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    try {
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: email,
+        password: password,
+      );
+      return await _auth.currentUser?.reauthenticateWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw QCFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw QCFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const QCFormatException();
+    } on PlatformException catch (e) {
+      throw QCPlatformException(e.code).message;
+    } catch (e) {
+      if (kDebugMode) print('Something went Wrong: $e');
+      return null;
+    }
+  }
+
   ///[LogoutUser] Valid for any authentication
   Future<void> logout() async {
     try {
       GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
       Get.offAll(() => LoginScreen());
+    } on FirebaseAuthException catch (e) {
+      throw QCFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw QCFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const QCFormatException();
+    } on PlatformException catch (e) {
+      throw QCPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again.';
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    try {
+      await UserRepository.instance.removeUserRecord(_auth.currentUser!.uid);
+      await _auth.currentUser?.delete();
     } on FirebaseAuthException catch (e) {
       throw QCFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

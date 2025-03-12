@@ -1,11 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:quicks_cart/common/widgets/shimmer/shimmer_effect.dart';
 import 'package:quicks_cart/utils/constants/colors.dart';
 import 'package:quicks_cart/utils/helpers/helper_functions.dart';
 
 import '../../../utils/constants/sizes.dart';
 
-class CircularImages extends StatelessWidget {
-  const CircularImages({
+class QCCircularImages extends StatelessWidget {
+  const QCCircularImages({
     super.key,
     this.fit = BoxFit.cover,
     required this.image,
@@ -38,14 +40,35 @@ class CircularImages extends StatelessWidget {
                 : QCColors.white),
         borderRadius: BorderRadius.circular(100),
       ),
-      child: Center(
-        child: Image(
-          image:
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: Center(
+          child:
               isNetworkImage
-                  ? NetworkImage(image)
-                  : AssetImage(image) as ImageProvider,
-          fit: fit,
-          color: overlayColor,
+                  ? CachedNetworkImage(
+                    imageUrl: image,
+                    width: width,
+                    height: height,
+                    fit: fit,
+                    color: overlayColor,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            const QCShimmerEffect(
+                              width: 80,
+                              height: 80,
+                              radius: 80,
+                            ),
+
+                    errorWidget:
+                        (context, url, error) => const Icon(Icons.error),
+                  )
+                  : Image(
+                    image: AssetImage(image),
+                    width: width,
+                    height: height,
+                    fit: fit,
+                    color: overlayColor,
+                  ),
         ),
       ),
     );

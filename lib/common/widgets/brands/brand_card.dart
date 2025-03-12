@@ -9,11 +9,7 @@ import '../images/circular_images.dart';
 import '../text/brand_title_with_verified_icon.dart';
 
 class QCBrandCard extends StatelessWidget {
-  const QCBrandCard({
-    super.key,
-    this.onTap,
-    required this.showBorder,
-  });
+  const QCBrandCard({super.key, this.onTap, required this.showBorder});
 
   final bool showBorder;
   final void Function()? onTap;
@@ -32,7 +28,7 @@ class QCBrandCard extends StatelessWidget {
         child: Row(
           children: [
             Flexible(
-              child: CircularImages(
+              child: QCCircularImages(
                 isNetworkImage: false,
                 image: QCImages.nikeLogo,
                 backgroundColor: Colors.transparent,
